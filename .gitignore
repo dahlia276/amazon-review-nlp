@@ -1,0 +1,3 @@
+# Large datasets
+data/raw/*.jsonl
+!data/raw/electronics_sample.jsonl
