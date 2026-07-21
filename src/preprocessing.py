@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 SENTIMENT_MAP = {
     1: "negative",
@@ -30,11 +31,13 @@ def validate_columns(df: pd.DataFrame) -> None:
 
 
 def clean_text(text: str) -> str:
-    """Basic whitespace cleanup."""
+    """Remove HTML tags and normalize whitespace."""
     if pd.isna(text):
         return ""
 
-    return " ".join(str(text).split())
+    text = str(text)
+    text = re.sub(r"<[^>]+>", " ", text)
+    return " ".join(text.split())
 
 
 def preprocess_data(filepath: str) -> pd.DataFrame:

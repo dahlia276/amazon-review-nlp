@@ -1,0 +1,62 @@
+{
+    "0": [
+        "case",
+        "ipad",
+        "keyboard",
+        "tablet",
+        "laptop",
+        "fits",
+        "screen",
+        "mouse",
+        "cover",
+        "stand"
+    ],
+    "1": [
+        "camera",
+        "tv",
+        "remote",
+        "time",
+        "worked",
+        "device",
+        "need",
+        "set",
+        "did",
+        "quality"
+    ],
+    "2": [
+        "sound",
+        "headphones",
+        "quality",
+        "ear",
+        "speaker",
+        "price",
+        "speakers",
+        "small",
+        "music",
+        "comfortable"
+    ],
+    "3": [
+        "price",
+        "quality",
+        "excellent",
+        "sturdy",
+        "bought",
+        "small",
+        "need",
+        "item",
+        "little",
+        "does"
+    ],
+    "4": [
+        "cable",
+        "cables",
+        "cord",
+        "usb",
+        "charger",
+        "charge",
+        "charging",
+        "plug",
+        "power",
+        "cords"
+    ]
+}

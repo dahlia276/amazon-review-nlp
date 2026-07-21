@@ -33,6 +33,30 @@ def cluster_reviews(embeddings, n_clusters=5):
 
 
 def get_cluster_keywords(df, n_keywords=10):
+    GENERIC_WORDS = {
+        "great",
+        "good",
+        "better",
+        "like",
+        "love",
+        "perfect",
+        "product",
+        "products",
+        "use",
+        "used",
+        "using",
+        "works",
+        "work",
+        "working",
+        "easy",
+        "nice",
+        "really",
+        "just",
+        "got",
+        "buy",
+        "looks",
+    }
+
     keywords = {}
 
     for cluster in sorted(df["cluster"].unique()):
@@ -50,12 +74,13 @@ def get_cluster_keywords(df, n_keywords=10):
 
         words = vectorizer.get_feature_names_out()
 
-        top_indices = scores.argsort()[-n_keywords:][::-1]
-
-        keywords[cluster] = [
+        ranked_words = [
             words[i]
-            for i in top_indices
+            for i in scores.argsort()[::-1]
+            if words[i] not in GENERIC_WORDS
         ]
+
+        keywords[str(cluster)] = ranked_words[:n_keywords]
 
     return keywords
 
