@@ -1,45 +1,90 @@
-from pathlib import Path
-
-import matplotlib.pyplot as plt
-
 from src.clustering import (
     cluster_reviews,
-    generate_embeddings,
-    reduce_dimensions,
+    create_embeddings,
+    find_best_k,
+    get_cluster_keywords,
+    load_embedding_model,
+    plot_clusters,
+    plot_silhouette_scores,
 )
 from src.config import DATA_PATH
 from src.preprocessing import preprocess_data
 
-OUTPUT_DIR = Path("outputs/figures")
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-
 def main():
     df = preprocess_data(DATA_PATH)
 
-    # Limit for speed while developing
-    df = df.sample(3000, random_state=42)
+    # Smaller sample for speed
+    df = df.sample(
+        2000,
+        random_state=42,
+    ).reset_index(drop=True)
 
-    embeddings = generate_embeddings(df)
+    model = load_embedding_model()
 
-    labels = cluster_reviews(embeddings)
+    embeddings = create_embeddings(
+        model,
+        df["text"].tolist(),
+    )
+    
+    scores = find_best_k(
+    embeddings,
+    min_k=2,
+    max_k=8,
+    )
+    plot_silhouette_scores(scores)
+    print("\nSilhouette Scores")
+    print("=" * 40)
 
-    reduced = reduce_dimensions(embeddings)
+    for k, score in scores.items():
+        print(f"k = {k}: {score:.3f}")
 
-    plt.figure(figsize=(8, 6))
-    plt.scatter(
-        reduced[:, 0],
-        reduced[:, 1],
-        c=labels,
-        s=8,
+    # Silhouette analysis suggests larger k values only provide
+    # marginal improvements. Chose k=5 because it produces
+    # more interpretable clusters.
+    N_CLUSTERS = 5
+    labels, _ = cluster_reviews(
+        embeddings,
+        n_clusters=N_CLUSTERS,
     )
 
-    plt.title("Review Clusters")
-    plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / "review_clusters.png")
+    df["cluster"] = labels
+    
+    keywords = get_cluster_keywords(df)
 
-    print("Cluster visualization saved.")
+    print("\n" + "=" * 80)
+    print("TOP KEYWORDS")
+    print("=" * 80)
 
+    for cluster, words in keywords.items():
+        print(f"\nCluster {cluster}")
+        print(", ".join(words))
+
+    print("\nCluster counts:\n")
+    print(df["cluster"].value_counts().sort_index())
+
+    print("\n" + "=" * 80)
+
+    for cluster in sorted(df["cluster"].unique()):
+        print(f"\nCLUSTER {cluster}")
+        print("-" * 80)
+
+        examples = (
+            df[df["cluster"] == cluster]["text"]
+            .head(2)
+            .tolist()
+        )
+
+        for i, review in enumerate(examples, start=1):
+            print(f"\nReview {i}:")
+            print(review[:300])
+            print()
+
+    plot_clusters(
+        embeddings,
+        labels,
+    )
+
+    print("\nCluster visualization saved to outputs/figures/clusters.png")
 
 if __name__ == "__main__":
     main()
