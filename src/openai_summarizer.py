@@ -18,7 +18,7 @@ class ReviewSummary(BaseModel):
     summary: str
 
 
-def summarize_reviews(reviews):
+def summarize_reviews_openai(reviews):
     """
     Summarize up to 20 Amazon reviews using OpenAI.
 
