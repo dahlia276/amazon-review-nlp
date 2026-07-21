@@ -95,7 +95,7 @@ def find_best_k(embeddings, min_k=2, max_k=8):
     for k in range(min_k, max_k + 1):
 
         kmeans = KMeans(
-            n_clusters=5,
+            n_clusters=k,
             random_state=42,
             n_init="auto",
         )

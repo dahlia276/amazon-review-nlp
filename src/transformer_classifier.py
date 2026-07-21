@@ -27,3 +27,19 @@ def predict(classifier, reviews):
         mapping[p["label"].lower()]
         for p in predictions
     ]
+
+
+def predict_roberta(review: str) -> str:
+    """
+    Predict sentiment for a single review using RoBERTa.
+    """
+
+    classifier = load_classifier()
+
+    prediction = classifier(
+        review,
+        truncation=True,
+        max_length=512,
+    )[0]
+
+    return prediction["label"].lower()

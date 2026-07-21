@@ -49,3 +49,28 @@ def train_classifier(df):
 def save_model(model, vectorizer):
     joblib.dump(model, "outputs/classifier.joblib")
     joblib.dump(vectorizer, "outputs/vectorizer.joblib")
+
+
+def load_model():
+    """
+    Load the trained Logistic Regression model and TF-IDF vectorizer.
+    """
+
+    model = joblib.load("outputs/classifier.joblib")
+    vectorizer = joblib.load("outputs/vectorizer.joblib")
+
+    return model, vectorizer
+
+
+def predict_logistic(review: str) -> str:
+    """
+    Predict sentiment for a single review.
+    """
+
+    model, vectorizer = load_model()
+
+    review_vector = vectorizer.transform([review])
+
+    prediction = model.predict(review_vector)[0]
+
+    return prediction
