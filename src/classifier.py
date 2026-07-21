@@ -2,13 +2,12 @@ import joblib
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
 
 def train_classifier(df):
     """
-    Train a TF-IDF + Logistic Regression sentiment classifier.
+    Train a TF-IDF + Logistic Regression classifier.
     """
 
     X = df["text"]
@@ -39,9 +38,12 @@ def train_classifier(df):
 
     predictions = model.predict(X_test_vec)
 
-    print(classification_report(y_test, predictions))
-
-    return model, vectorizer
+    return {
+        "model": model,
+        "vectorizer": vectorizer,
+        "predictions": predictions,
+        "y_test": y_test,
+    }
 
 
 def save_model(model, vectorizer):
