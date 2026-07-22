@@ -16,9 +16,10 @@ __pycache__/
 .vscode/
 .idea/
 
-# Generated outputs
-outputs/figures/
-outputs/summaries/
+# Generated summaries
+outputs/summaries/*
+!outputs/summaries/.gitkeep
+!outputs/summaries/*.json
 
 # Large datasets
 data/raw/*.jsonl
