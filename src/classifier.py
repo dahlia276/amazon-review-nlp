@@ -3,7 +3,7 @@ import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-
+from src.models import get_logistic_model
 
 def train_classifier(df):
     """
@@ -63,11 +63,7 @@ def load_model():
 
 
 def predict_logistic(review: str) -> str:
-    """
-    Predict sentiment for a single review.
-    """
-
-    model, vectorizer = load_model()
+    model, vectorizer = get_logistic_model()
 
     review_vector = vectorizer.transform([review])
 

@@ -1,5 +1,5 @@
 from transformers import pipeline
-
+from src.models import get_roberta_classifier
 
 def load_classifier():
     return pipeline(
@@ -34,7 +34,7 @@ def predict_roberta(review: str) -> str:
     Predict sentiment for a single review using RoBERTa.
     """
 
-    classifier = load_classifier()
+    classifier = get_roberta_classifier()
 
     prediction = classifier(
         review,
