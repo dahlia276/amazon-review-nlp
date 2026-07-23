@@ -1,9 +1,21 @@
+import os
+import sys
+
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..")
+)
+
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+import streamlit as st
 import json
 from pathlib import Path
 
-import streamlit as st
-
 from src.config import IS_LOCAL
+
+st.write("IS_LOCAL:", IS_LOCAL)
+
 
 st.set_page_config(page_title="Review Summarization", page_icon="📝")
 
