@@ -23,7 +23,7 @@ from src.preprocessing import preprocess_data
 OUTPUT_DIR = Path("outputs")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-N_CLUSTERS = 5
+N_CLUSTERS = 6
 SAMPLE_SIZE = 2000
 
 

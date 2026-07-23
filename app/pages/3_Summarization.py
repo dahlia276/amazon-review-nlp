@@ -12,6 +12,7 @@ import streamlit as st
 import json
 from pathlib import Path
 
+from src.cluster_categories import get_cluster_category
 from src.config import IS_LOCAL
 
 st.set_page_config(page_title="Review Summarization", page_icon="📝")
@@ -52,9 +53,12 @@ if IS_LOCAL:
         bart_summaries = json.load(f)
 
 cluster = st.selectbox(
-    "Select a cluster",
+    "Select a category",
     sorted(openai_summaries.keys(), key=int),
+    format_func=lambda cluster_id: get_cluster_category(int(cluster_id)),
 )
+
+st.subheader(get_cluster_category(int(cluster)))
 
 if IS_LOCAL:
     col1, col2 = st.columns(2)

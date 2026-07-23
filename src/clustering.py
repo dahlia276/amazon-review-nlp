@@ -2,9 +2,12 @@ from sentence_transformers import SentenceTransformer
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 from pathlib import Path
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
+
+from src.cluster_categories import get_cluster_category
 
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
@@ -103,11 +106,16 @@ def plot_clusters(embeddings, labels):
         alpha=0.7,
     )
 
-    plt.legend(
-        *scatter.legend_elements(),
-        title="Clusters",
-    )
-    plt.title("Review Clusters (PCA)")
+    cluster_ids = sorted(set(labels))
+    legend_handles = [
+        Patch(
+            color=scatter.cmap(scatter.norm(cluster_id)),
+            label=get_cluster_category(int(cluster_id)),
+        )
+        for cluster_id in cluster_ids
+    ]
+    plt.legend(handles=legend_handles, title="Categories")
+    plt.title("Review Categories (PCA)")
     plt.xlabel("Principal Component 1")
     plt.ylabel("Principal Component 2")
     plt.tight_layout()

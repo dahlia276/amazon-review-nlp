@@ -1,8 +1,15 @@
 import json
+import sys
 from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import pandas as pd
 import streamlit as st
+from src.cluster_categories import get_cluster_category
 
 st.set_page_config(page_title="Review Clustering", page_icon="🧩")
 
@@ -15,7 +22,6 @@ using SentenceTransformer embeddings and K-Means clustering.
 """
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = PROJECT_ROOT / "outputs"
 FIGURES_DIR = OUTPUT_DIR / "figures"
 
@@ -67,8 +73,9 @@ st.subheader("Explore Clusters")
 cluster_options = sorted(clustered_reviews["cluster"].unique())
 
 selected_cluster = st.selectbox(
-    "Select a cluster",
+    "Select a category",
     cluster_options,
+    format_func=get_cluster_category,
 )
 
 cluster_df = clustered_reviews[
@@ -91,7 +98,7 @@ col3.metric("Neutral", f"{neutral_pct:.1f}%")
 col4.metric("Negative", f"{negative_pct:.1f}%")
 
 st.info(
-    f"Cluster {selected_cluster} contains **{cluster_size} reviews**. "
+    f"**{get_cluster_category(selected_cluster)}** contains **{cluster_size} reviews**. "
     "Use the keywords and example reviews below to understand the main theme."
 )
 
