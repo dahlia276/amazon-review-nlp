@@ -15,7 +15,23 @@ using SentenceTransformer embeddings and K-Means clustering.
 """
 )
 
-OUTPUT_DIR = Path("outputs")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+OUTPUT_DIR = PROJECT_ROOT / "outputs"
+FIGURES_DIR = OUTPUT_DIR / "figures"
+
+
+def show_figure(filename: str, description: str) -> None:
+    """Display a generated figure without crashing if it is not deployed."""
+    figure_path = FIGURES_DIR / filename
+
+    if figure_path.is_file():
+        st.image(figure_path, width="stretch")
+        return
+
+    st.info(
+        f"{description} is not available because `{figure_path.relative_to(PROJECT_ROOT)}` "
+        "has not been generated or included in this deployment."
+    )
 
 clustered_reviews = pd.read_csv(
     OUTPUT_DIR / "clustered_reviews.csv"
@@ -35,10 +51,7 @@ st.write(
     "closer together are more semantically similar."
 )
 
-st.image(
-    "outputs/figures/clusters.png",
-    width="stretch",
-)
+show_figure("clusters.png", "The cluster visualisation")
 
 st.subheader("Silhouette Analysis")
 
@@ -47,10 +60,7 @@ st.write(
     "better separation between clusters."
 )
 
-st.image(
-    "outputs/figures/silhouette_scores.png",
-    width="stretch",
-)
+show_figure("silhouette_scores.png", "The silhouette chart")
 
 st.subheader("Explore Clusters")
 

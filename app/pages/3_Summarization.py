@@ -14,9 +14,6 @@ from pathlib import Path
 
 from src.config import IS_LOCAL
 
-st.write("IS_LOCAL:", IS_LOCAL)
-
-
 st.set_page_config(page_title="Review Summarization", page_icon="📝")
 
 st.title("📝 Review Summarization")
