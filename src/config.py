@@ -1,6 +1,8 @@
 import os
 
-DEPLOYMENT_MODE = os.getenv("DEPLOYMENT_MODE", "local").lower()
+# Production is the safe default for hosted deployments. Set
+# DEPLOYMENT_MODE=local explicitly when running the full model comparison.
+DEPLOYMENT_MODE = os.getenv("DEPLOYMENT_MODE", "production").lower()
 
 IS_LOCAL = DEPLOYMENT_MODE == "local"
 IS_PRODUCTION = DEPLOYMENT_MODE == "production"

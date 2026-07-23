@@ -239,6 +239,11 @@ Launch the dashboard:
 streamlit run app/app.py
 ```
 
+Note: In production, the app uses the lightweight TF-IDF + Logistic
+Regression classifier and does not load the memory-intensive transformer models.
+Use `DEPLOYMENT_MODE=local` only when running locally and comparing the
+Logistic Regression and RoBERTa predictions or BART and openai for summarization.
+
 ---
 
 # 📊 Dashboard
