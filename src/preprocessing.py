@@ -31,12 +31,18 @@ def validate_columns(df: pd.DataFrame) -> None:
 
 
 def clean_text(text: str) -> str:
-    """Remove HTML tags and normalize whitespace."""
+    """Normalize review text while retaining sentiment-bearing negation."""
     if pd.isna(text):
         return ""
 
     text = str(text)
+    text = text.replace("’", "'")
     text = re.sub(r"<[^>]+>", " ", text)
+    # Expand negated contractions before vectorization so phrases such as
+    # "don't like" become the meaningful bigram "not like".
+    text = re.sub(r"\bcan't\b", "can not", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bwon't\b", "will not", text, flags=re.IGNORECASE)
+    text = re.sub(r"n't\b", " not", text, flags=re.IGNORECASE)
     return " ".join(text.split())
 
 

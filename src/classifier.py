@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from src.models import get_logistic_model
+from src.preprocessing import clean_text
 
 def train_classifier(df):
     """
@@ -22,8 +23,12 @@ def train_classifier(df):
     )
 
     vectorizer = TfidfVectorizer(
-        max_features=10000,
-        stop_words="english",
+        # Keep negation words and include phrases such as "not good".
+        ngram_range=(1, 2),
+        max_features=20000,
+        min_df=2,
+        max_df=0.95,
+        sublinear_tf=True,
     )
 
     X_train_vec = vectorizer.fit_transform(X_train)
@@ -65,7 +70,7 @@ def load_model():
 def predict_logistic(review: str) -> str:
     model, vectorizer = get_logistic_model()
 
-    review_vector = vectorizer.transform([review])
+    review_vector = vectorizer.transform([clean_text(review)])
 
     prediction = model.predict(review_vector)[0]
 
