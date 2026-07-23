@@ -1,13 +1,4 @@
-from transformers import pipeline
 from src.models import get_roberta_classifier
-
-def load_classifier():
-    return pipeline(
-        "sentiment-analysis",
-        model="cardiffnlp/twitter-roberta-base-sentiment-latest",
-        truncation=True,
-    )
-
 
 def predict(classifier, reviews):
     predictions = classifier(
